@@ -1,17 +1,24 @@
-# Max Cleaning 02 – Web Aplikacion per Larje Tepiha
+# Max Cleaning 02 – Web Aplikacion për Larje Tepiha
 
-## Pershkrimi
-Max Cleaning 02 eshte web-aplikacion per menaxhimin e porosive te larjes se tepiha,
-i ndertuar per perdorim ne Kosove dhe ne gjuhen Shqipe.
+## Përshkrimi
+Max Cleaning 02 është web-aplikacion për menaxhimin e porosive të larjes së tepiha,
+i ndërtuar për përdorim në Kosovë dhe në gjuhën Shqipe.
 
-## Rolet ne Aplikacion
-- Klient (User)
+---
+
+## Rolet në Aplikacion
+- Klient
 - Admin
 
+---
+
 ## Autentikimi
-- Autentikimi behet me numer telefoni
-- Nese numri i telefonit ekziston ne databaze si admin,
-  llogaria krijohet automatikisht si ADMIN
+- Autentikimi bëhet me **numër telefoni**
+- Nëse numri i telefonit ekziston në databazë si admin,
+  llogaria krijohet automatikisht si **ADMIN**
+- Fjalëkalimet ruhen të **hash-uara** në databazë (`password_hash`)
+
+---
 
 ## Teknologjia
 - Backend: PHP
@@ -19,166 +26,218 @@ i ndertuar per perdorim ne Kosove dhe ne gjuhen Shqipe.
 - Server lokal: XAMPP (Apache + MySQL)
 - Frontend: HTML, CSS, JavaScript
 - SMS: SMS Gateway (njoftime automatike)
+- Maps: Share Location / Google Maps
+
+---
 
 # AUTENTIKIMI (Kyçu & Regjistrohu)
 
 ## Kyçu (Login)
-- Faqja e kyçjes eshte e perbashket per Klient dhe Admin
+- Faqja e kyçjes është e përbashkët për Klient dhe Admin
 
 ### Fushat
 - Numri i telefonit
-- Fjalekalimi
+- Fjalëkalimi
 - Butoni Kyçu
 
 ### Linke
 - Regjistrohu
-- Kam harruar fjalekalimin
+- Kam harruar fjalëkalimin
 
 ### Sjellja pas Kyçjes
-- Nese numri eshte ADMIN → ridrejtohet te Admin Panel
-- Nese numri eshte CLIENT → ridrejtohet te Faqja Kryesore (User)
+- Nëse numri është ADMIN → ridrejtohet te **Admin Panel**
+- Nëse numri është KLIENT → ridrejtohet te **Faqja Kryesore (Klient)**
+
+---
 
 ## Regjistrohu (Register)
-- Regjistrimi behet vetem me numer telefoni
+- Regjistrimi bëhet vetëm me numër telefoni
 
-### Hapat
+### Fushat
 - Emri
 - Mbiemri
 - Numri i telefonit
-- Vendos fjalekalimin
-- Konfirmo fjalekalimin
-- Regjistrohu
+- Fjalëkalimi
+- Konfirmo fjalëkalimin
 
-- Nese numri eshte ne listen e adminëve ne DB → krijohet si ADMIN
-- Perndryshe → krijohet si CLIENT
+### Logjika
+- Nëse numri ekziston në listën e adminëve → krijohet si **ADMIN**
+- Përndryshe → krijohet si **KLIENT**
+- Fjalëkalimi ruhet i **hash-uar**
 
-## Kam harruar fjalekalimin
+---
+
+## Kam harruar fjalëkalimin
 - Shkruan numrin e telefonit
-- Vendos fjalekalimin e ri
-- Ruaj dhe kyçu
+- Vendos fjalëkalimin e ri
+- Fjalëkalimi ruhet i hash-uar
+- Kyçet automatikisht
 
-# PJESA E KLIENTIT (CLIENT)
+---
+
+# PJESA E KLIENTIT (KLIENT)
 
 ## Header Klient
-- Faqja kryesore
-- Forma e porosise
+- Faqja Kryesore
+- Forma e Porosisë
 - Qmimore
-- Porosite e bera
+- Porositë e Mia
 - Logout
 
-- Nese klienti nuk eshte i kyçur,
-  klikimi ne keto faqe e con te Kyçu
+> Nëse klienti nuk është i kyçur,
+> qasja në këto faqe e ridrejton te Kyçu.
 
-## Faqja Kryesore (User)
-- Pershkrim i sherbimit
+---
+
+## Faqja Kryesore (Klient)
+- Përshkrim i shërbimit
 - Lokacionet e biznesit
-- Butona per porosi dhe informata
+- Butona për krijim porosie dhe informata
 
-## Forma e Porosise
-Klienti krijon porosi duke zgjedhur menyren e dorezimit:
-- E sjell vete ne lokacion
-- Kompania vjen per marrje ne adrese
+---
 
-### Marrje ne adrese
-- Buton Share Location
-- Vendndodhja ruhet ne harte per adminin
+## Forma e Porosisë
+Klienti krijon porosi duke zgjedhur mënyrën e dorëzimit:
+- E sjell vetë në lokacion
+- Kompania vjen për marrje në adresë
+
+### Marrje në adresë
+- Buton **Share Location**
+- Lokacioni ruhet dhe shfaqet në hartë për Adminin
+
+---
 
 ### Tepihat
-- Sasia
-- Gjeresia (cm)
-- Gjatesia (cm)
+- Sasia e tepiheve
+- Për çdo tepih:
+  - Gjerësia (cm)
+  - Gjatësia (cm)
+- Buton: Shto tepih tjetër
 
-### Pas dergimit
-- Mesazh ne web:
-  "Porosia juaj eshte derguar dhe eshte ende e pa pranuar."
-- SMS me te njejtin mesazh dergohet automatikisht
+---
 
-## Qmimore
-- Cmimet jane orientuese
-- Cmimi final konfirmohet nga admini pas matjes reale
+### Pas dërgimit të porosisë
+- Mesazh në web:
+  "Porosia juaj është dërguar dhe është ende e pa pranuar."
+- SMS automatik me të njëjtin mesazh
 
-## Porosite e Bera
+---
+
+## Qmimore (Klient)
+- Çmimet janë **orientuese**
+- Çmimi final konfirmohet nga Admini pas matjes reale
+
+---
+
+## Porositë e Mia
 Klienti sheh:
-- Numrin e porosise
+- Numrin e porosisë
 - Statusin
-- Tepihat (sasia dhe permasat)
-- Cmimin final (nese ekziston)
+- Tepihat (sasia dhe përmasat)
+- Çmimin final (nëse ekziston)
 
-- Cdo perditesim shfaqet ne web
-- Cdo perditesim dergohet me SMS
+- Çdo përditësim shfaqet në web
+- Çdo përditësim njoftohet me SMS
+
+---
 
 # PJESA E ADMINIT (ADMIN PANEL)
 
 ## Header Admin
-- Faqja kryesore
-- Menaxhim i porosive
-- Nisje
-- Porosite / Klientet
+- Faqja Kryesore
+- Menaxhim i Porosive
+- Transporti
+- Porosi / Klientë
+- Qmimore
 - Buxheti
 - Logout
 
+---
+
 ## Faqja Kryesore (Admin)
 Admini sheh:
-- Pershendetje personale
-- Butona:
-  - Menaxhim i porosive
-  - Nisje
+- Përshëndetje personale
+- Butona kryesorë:
+  - Menaxhim i Porosive
+  - Transporti
   - Buxheti
-- (Opsionale) Porosi sot
+- (Opsionale) Porositë e ditës
+
+---
 
 ## Menaxhim i Porosive
 Admini sheh:
 - Emrin e klientit
 - Numrin e telefonit
 - Lokacionin
-- Share Location (harte)
+- Share Location (hartë)
 - Sasinë e tepiheve
 
-### Detajet e Porosise
-- Tepihat me gjeresi dhe gjatesi
-- Mundesi per korrigjim te permasave
-- Cmimi llogaritet automatikisht
+### Detajet e Porosisë
+- Tepihat me gjerësi dhe gjatësi
+- Mundësi për korrigjim të përmasave reale
+- Çmimi llogaritet automatikisht
 
-- Cmimi standard: 0.89 € / m2
+---
 
-### Veprimet
-- Prano porosine
-- Vendos Gati me / Dorezim me
-- Anulo porosine
+### Veprimet e Adminit
+- Prano porosinë
+- Vendos statusin (në transport / gati / dorëzuar)
+- Anulo porosinë
 
-- Cdo veprim perditeson statusin
-- Cdo veprim dergon SMS te klienti
+- Çdo veprim:
+  - përditëson statusin në web
+  - dërgon SMS te klienti
 
-## Nisje (Marrje & Dorezim)
-- Admini niset per marrje ose dorezim
-- Statusi perditesohet
+---
 
-### SMS
-- "Sot do vijme me i marre tepihat."
-- "Tepihu vjen sot."
+## Qmimore (Admin)
+- Admini menaxhon çmimin për metër katror (€/m²)
+- Çmimi mund të ndryshohet në çdo kohë
 
-## Porosite / Klientet (Vetem shikim)
-- Lista e porosive dhe klienteve
-- Renditje nga me e reja
-- Shfaq statusin dhe cmimin
-- Pa mundesi menaxhimi
+### Shembull
+- Çmimi aktual: 0.89 € / m²
+- Në të ardhmen mund të bëhet: 1.20 € / m²
+- Çdo porosi llogaritet sipas çmimit aktiv në momentin e konfirmimit
+
+---
+
+## Transporti (Marrje & Dorëzim)
+- Admini shënon nisjen për marrje ose dorëzim
+- Statusi i porosisë përditësohet
+
+### SMS automatike
+- "Sot do vijmë për marrjen e tepiheve."
+- "Tepihat do të dorëzohen sot."
+
+---
+
+## Porosi / Klientë (Vetëm shikim)
+- Lista e të gjitha porosive dhe klientëve
+- Renditje nga më e reja
+- Shfaq statusin dhe çmimin
+- Pa mundësi menaxhimi
+
+---
 
 ## Buxheti
-- Llogaritet vetem nga porosite e dorezuara
+- Llogaritet vetëm nga porositë e **dorëzuara**
 
-### Filter
+### Filtra
 - Sot
-- Jave
+- Javë
 - Muaj
 
 - Shfaq fitimin bruto
 
-## Statuset e Porosive
-- Pa pranuara
-- Te pranuara
-- Te nisura
-- Te dorezuara
-- Te anuluara
+---
 
-- Cdo status perditesohet ne web
-- Cdo status njoftohet me SMS
+## Statuset e Porosive
+- Të pa pranuara
+- Të pranuara
+- Në transport
+- Të dorëzuara
+- Të anuluara
+
+- Çdo status përditësohet në web
+- Çdo status njoftohet me SMS
