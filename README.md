@@ -4,6 +4,11 @@
 Max Cleaning 02 është web-aplikacion për menaxhimin e porosive të larjes së tepiha,
 i ndërtuar për përdorim në Kosovë dhe në gjuhën Shqipe.
 
+Biznesi ka lokacion fizik në **Klinë e Epërme**,
+ndërsa shërbimi i **marrjes dhe dorëzimit të tepiheve** ofrohet në:
+- **Mitrovicë**
+- **Skenderaj**
+
 ---
 
 ## Rolet në Aplikacion
@@ -17,6 +22,19 @@ i ndërtuar për përdorim në Kosovë dhe në gjuhën Shqipe.
 - Nëse numri i telefonit ekziston në databazë si admin,
   llogaria krijohet automatikisht si **ADMIN**
 - Fjalëkalimet ruhen të **hash-uara** në databazë (`password_hash`)
+- Përdoret **session-based authentication**
+
+---
+
+## Siguria
+- Session-based authentication
+- Kontroll i aksesit sipas rolit (Klient / Admin)
+- Mbrojtje nga qasja direkte në faqet e Adminit (route/guard)
+- (Opsionale) CSRF token për format kritike:
+  - login
+  - register
+  - porosi
+  - update statusi / çmimi
 
 ---
 
@@ -91,17 +109,23 @@ i ndërtuar për përdorim në Kosovë dhe në gjuhën Shqipe.
 
 ## Faqja Kryesore (Klient)
 - Përshkrim i shërbimit
-- Lokacionet e biznesit
+- Lokacioni i biznesit: **Klinë e Epërme**
+- Zonat e shërbimit për marrje dhe dorëzim:
+  - Mitrovicë
+  - Skenderaj
 - Butona për krijim porosie dhe informata
 
 ---
 
 ## Forma e Porosisë
 Klienti krijon porosi duke zgjedhur mënyrën e dorëzimit:
-- E sjell vetë në lokacion
-- Kompania vjen për marrje në adresë
+- E sjell vetë në lokacion (**Klinë e Epërme**)
+- Kompania vjen për marrje në adresë (**Mitrovicë / Skenderaj**)
 
 ### Marrje në adresë
+- Klienti zgjedh qytetin:
+  - Mitrovicë
+  - Skenderaj
 - Buton **Share Location**
 - Lokacioni ruhet dhe shfaqet në hartë për Adminin
 
@@ -113,6 +137,16 @@ Klienti krijon porosi duke zgjedhur mënyrën e dorëzimit:
   - Gjerësia (cm)
   - Gjatësia (cm)
 - Buton: Shto tepih tjetër
+
+---
+
+## Validimi i të Dhënave
+- Validim frontend (JavaScript)
+- Validim backend (PHP)
+- Nuk lejohet:
+  - gjerësi/gjatësi 0 ose negative
+  - sasi 0
+  - qytet jashtë Mitrovicë / Skenderaj (kur zgjedhet marrje në adresë)
 
 ---
 
@@ -141,6 +175,21 @@ Klienti sheh:
 
 ---
 
+## Historiku i Porosisë
+- Çdo ndryshim statusi ruhet si histori
+- Klienti mund të shohë:
+  - statusin
+  - datën
+  - orën
+
+---
+
+## Orari i Punës (Opsionale)
+- Porositë jashtë orarit shënohen si "Në pritje"
+- Admini i konfirmon ditën tjetër
+
+---
+
 # PJESA E ADMINIT (ADMIN PANEL)
 
 ## Header Admin
@@ -162,6 +211,7 @@ Admini sheh:
   - Transporti
   - Buxheti
 - (Opsionale) Porositë e ditës
+- (Opsionale) Njoftime për porosi të reja
 
 ---
 
@@ -169,8 +219,8 @@ Admini sheh:
 Admini sheh:
 - Emrin e klientit
 - Numrin e telefonit
-- Lokacionin
-- Share Location (hartë)
+- Qytetin (Mitrovicë / Skenderaj) ose “E sjell vetë”
+- Lokacionin në hartë (Share Location)
 - Sasinë e tepiheve
 
 ### Detajet e Porosisë
@@ -203,11 +253,14 @@ Admini sheh:
 ---
 
 ## Transporti (Marrje & Dorëzim)
+- Transporti realizohet vetëm në:
+  - Mitrovicë
+  - Skenderaj
 - Admini shënon nisjen për marrje ose dorëzim
 - Statusi i porosisë përditësohet
 
 ### SMS automatike
-- "Sot do vijmë për marrjen e tepiheve."
+- "Sot do vijmë për marrjen e tepiheve në Mitrovicë / Skenderaj."
 - "Tepihat do të dorëzohen sot."
 
 ---
@@ -229,6 +282,38 @@ Admini sheh:
 - Muaj
 
 - Shfaq fitimin bruto
+
+---
+
+## Raporte (Opsionale)
+- Eksport i porosive në:
+  - PDF
+  - Excel
+- Raport mujor i fitimit
+
+---
+
+## Audit Log (Admin)
+- Regjistrohen veprimet e Adminit:
+  - pranim porosie
+  - ndryshim çmimi (€/m²)
+  - anulim porosie
+  - dorëzim porosie
+- Çdo veprim ruhet me datë dhe orë
+
+---
+
+## Fshirje Logjike (Soft Delete)
+- Porositë nuk fshihen fizikisht nga databaza
+- Shënohen si:
+  - të anuluara
+  - të arkivuara (opsionale)
+
+---
+
+## Backup
+- Backup i databazës rekomandohet rregullisht
+- (Opsionale) Backup automatik ditor/javor
 
 ---
 
