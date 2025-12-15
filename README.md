@@ -48,6 +48,43 @@ ndërsa shërbimi i **marrjes dhe dorëzimit të tepiheve** ofrohet në:
 
 ---
 
+## SMS Gateway (Dërgimi i SMS me Numër Telefoni)
+Për dërgimin e SMS-ve (njoftime automatike), aplikacioni përdor një **SMS Gateway API**
+(p.sh. Infobip / Twilio / Vonage / SMS.to).
+
+### Si funksionon
+- Aplikacioni **nuk** dërgon SMS direkt te IPKO/VALA.
+- Aplikacioni dërgon kërkesë (HTTP request) te **SMS Gateway**.
+- SMS Gateway e dërgon SMS te numri i klientit, pa rëndësi operatori.
+
+### Formati i numrit
+- Numrat ruhen dhe përdoren në format ndërkombëtar:
+  - `+3834XXXXXXXX`
+
+### Pagesa (si do e bëjmë)
+- Në fillim përdorim **trial/test credits** (nëse ofrohen) për testim.
+- Në prodhim përdorim modelin **pay-as-you-go** (kredi):
+  - mbushim llogarinë me kredi (p.sh. 10€ / 20€ / 30€)
+  - çdo SMS zbritet nga kredia (p.sh. ~0.03€ – 0.05€ / SMS, varet nga provider-i)
+- Opsionale: vendosim limit mujor dhe/ose auto-recharge (nëse nevojitet).
+
+### Implementimi në PHP
+- Integrimi bëhet me `cURL` duke dërguar request në endpoint të provider-it
+- Rekomandohet tabela `sms_logs` për ruajtje të:
+  - numrit (to)
+  - mesazhit
+  - statusit (sent/failed)
+  - response nga provider-i
+  - datë/orë
+
+### Kur dërgohet SMS
+- Kur porosia krijohet: “Porosia juaj u dërgua...”
+- Kur admini pranon porosinë
+- Kur statusi ndryshon (në transport / gati / dorëzuar / anuluar)
+- (Opsionale) Kur admini shënon Transportin për marrje/dorëzim
+
+---
+
 # AUTENTIKIMI (Kyçu & Regjistrohu)
 
 ## Kyçu (Login)
@@ -243,7 +280,8 @@ Admini sheh:
 
 ## Qmimore (Admin)
 - Admini menaxhon çmimin për metër katror (€/m²)
-- Çmimi mund të ndryshohet në çdo kohë
+- Çmimi mund të ndrysh
+ohet në çdo kohë
 
 ### Shembull
 - Çmimi aktual: 0.89 € / m²
